@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freshfood_app/page/home.dart';
-import 'package:freshfood_app/widget/icon_navigator_bar.dart';
+import 'package:freshfood_app/module/home/screens/home.dart';
+import 'package:freshfood_app/icon_navigator_bar.dart';
+import 'package:freshfood_app/module/auth/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const Home(),
     const Home(),
     const Home(),
-    const Home(),
+    // const Home(),
+    const LoginScreenWidget(),
   ];
 
   @override
