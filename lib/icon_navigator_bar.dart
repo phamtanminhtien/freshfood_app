@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'constant.dart';
 
 // rgba(74, 191, 120, 1)
-
-Color green = const Color.fromRGBO(74, 191, 120, 1);
 
 class Icon_Navigator_Bar extends StatelessWidget {
   final IconData icon;
@@ -28,20 +27,22 @@ class Icon_Navigator_Bar extends StatelessWidget {
               ? const Color.fromRGBO(217, 217, 217, .4)
               : Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            if (isSelected)
-              const BoxShadow(
-                color: Color.fromRGBO(217, 217, 217, 0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-          ],
+          // boxShadow: [
+          //   if (isSelected)
+          //     const BoxShadow(
+          //       color: Color.fromRGBO(217, 217, 217, 0.5),
+          //       spreadRadius: 5,
+          //       blurRadius: 7,
+          //       offset: Offset(0, 3), // changes position of shadow
+          //     ),
+          // ],
         ),
         child: Icon(
           icon,
           size: 35,
-          color: isSelected ? green : const Color.fromRGBO(148, 148, 148, 1),
+          color: isSelected
+              ? primaryColor
+              : const Color.fromRGBO(148, 148, 148, 1),
         ),
       ),
     );
