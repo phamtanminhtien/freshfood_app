@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'constant.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../constant.dart';
 
 // rgba(74, 191, 120, 1)
 
-class Icon_Navigator_Bar extends StatelessWidget {
-  final IconData icon;
+class IconNavigatorBar extends StatelessWidget {
+  final String icon;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const Icon_Navigator_Bar({
+  const IconNavigatorBar({
     Key? key,
     required this.icon,
     required this.isSelected,
@@ -37,9 +38,11 @@ class Icon_Navigator_Bar extends StatelessWidget {
           //     ),
           // ],
         ),
-        child: Icon(
+        child: SvgPicture.asset(
           icon,
-          size: 35,
+          width: 10,
+          fit: BoxFit.scaleDown,
+          // size: 35,
           color: isSelected
               ? primaryColor
               : const Color.fromRGBO(148, 148, 148, 1),
