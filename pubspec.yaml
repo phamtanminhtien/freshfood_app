@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/weather_icons/
     # - assets/videos/
     # - assets/audios/
     # - assets/lottie_animations/

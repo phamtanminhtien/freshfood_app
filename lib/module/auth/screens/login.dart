@@ -3,19 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:freshfood_app/constant.dart';
-import 'package:freshfood_app/module/models/login_screen_model.dart';
 import 'package:freshfood_app/module/auth/widgets/wallet_button.dart';
 
-class LoginScreenWidget extends StatefulWidget {
-  const LoginScreenWidget({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenWidgetState createState() => _LoginScreenWidgetState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenWidgetState extends State<LoginScreenWidget> {
-  LoginScreenModel? _model;
-
+class _LoginScreenState extends State<LoginScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 

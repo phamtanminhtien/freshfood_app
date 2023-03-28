@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:freshfood_app/constant.dart';
-import 'package:freshfood_app/module/home/screens/home.dart';
 import 'package:freshfood_app/common/icon_navigator_bar.dart';
+import 'package:freshfood_app/module/home/screens/home.dart';
+import 'package:freshfood_app/module/auth/screens/profile.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
 
 void main() {
@@ -46,9 +47,9 @@ class PageType {
 final List<PageType> pages = [
   const PageType(page: Home(), backgroundColor: homeBackgroundColor),
   const PageType(page: Home(), backgroundColor: homeBackgroundColor),
-  const PageType(page: Home(), backgroundColor: homeBackgroundColor),
-  const PageType(page: LoginScreenWidget(), backgroundColor: primaryColor),
-  // const Home(),
+  // const PageType(page: Home(), backgroundColor: homeBackgroundColor),
+  const PageType(page: LoginScreen(), backgroundColor: primaryColor),
+  const PageType(page: ProfileScreen(), backgroundColor: homeBackgroundColor),
 ];
 
 class _MyHomePageState extends State<MyHomePage> {

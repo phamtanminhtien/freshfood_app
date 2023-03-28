@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freshfood_app/module/home/models/field.dart';
 import 'package:freshfood_app/module/home/widgets/field_card.dart';
+import 'package:freshfood_app/module/home/widgets/weather_cart.dart';
 import '../../../constant.dart';
 
 const double paddingHorizontal = 20;
@@ -135,6 +136,11 @@ class _Home extends State<Home> {
     return true;
   }
 
+  String weatherIcon = "assets/weather_icons/rain_sun.png";
+  String weatherLocation = "Hanoi, Vietnam";
+  String weatherTemperature = "30";
+  String weatherDate = "Monday, 20 July 2020";
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).viewPadding.top;
@@ -215,47 +221,11 @@ class _Home extends State<Home> {
                               ),
                             ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/sun.png",
-                                    width: 150,
-                                    height: 150,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        "Ho Chi Minh City",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 15),
-                                      ),
-                                      Text(
-                                        "Friday - Mar 24",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w200,
-                                            fontSize: 13),
-                                      ),
-                                      Text(
-                                        "25°C",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 40),
-                                      )
-                                    ],
-                                  ),
-                                ]),
-                          )),
+                          child: WeatherCard(
+                              icon: weatherIcon,
+                              location: weatherLocation,
+                              date: weatherDate,
+                              temperature: weatherTemperature)),
                       const Padding(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
                         child: Text(
