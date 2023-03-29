@@ -12,90 +12,222 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool isEdit = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCustom(
-          isBack: true,
-          isLogout: true,
-          nameScreen: "Profile",
-          descriptionScreen: "views the profile"),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          const Text(
-            "Profile",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+        appBar: const AppBarCustom(
+            isBack: true,
+            isLogout: true,
+            nameScreen: "Profile",
+            descriptionScreen: "views the profile"),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: paddingHorizontal),
+          child: Column(children: [
+            Container(
+                padding: const EdgeInsets.only(top: 50),
+                child: Column(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: primaryColor,
+                      radius: 80,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/metamask.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          "0x123456789",
+                          style: GoogleFonts.getFont('Poppins',
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SvgPicture.asset('assets/icons/wallet.svg',
+                        width: 30, height: 30, fit: BoxFit.scaleDown),
+                    Column(
+                      children: [
+                        Text(
+                          "1000",
+                          style: GoogleFonts.getFont('Poppins',
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          "ETH",
+                          style: GoogleFonts.getFont('Poppins',
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "1000",
+                          style: GoogleFonts.getFont('Poppins',
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          "VND",
+                          style: GoogleFonts.getFont('Poppins',
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Name: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/metamask.svg',
+                        width: 20,
+                        height: 20,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Company",
+                        style: GoogleFonts.getFont('Poppins',
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: isEdit
+                        ? const TextField(
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          )
+                        : Text(
+                            "Company name",
+                            style: GoogleFonts.getFont('Poppins',
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Email: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/walletconnect.svg',
+                        width: 20,
+                        height: 20,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Description",
+                        style: GoogleFonts.getFont('Poppins',
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: isEdit
+                        ? const TextField(
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          )
+                        : Text(
+                            "Company name",
+                            style: GoogleFonts.getFont('Poppins',
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Phone: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            Container(
+              alignment: !isEdit ? Alignment.topLeft : Alignment.topRight,
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    isEdit = !isEdit;
+                  });
+                },
+                child: !isEdit
+                    ? Text(
+                        "Edit profile",
+                        style: GoogleFonts.getFont('Poppins',
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w400),
+                      )
+                    : Text(
+                        "Save",
+                        style: GoogleFonts.getFont('Poppins',
+                            color: Colors.green,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Address: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Wallet: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Balance: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Role: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Status: ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
+          ]),
+        ));
   }
 }

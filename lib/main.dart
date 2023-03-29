@@ -5,6 +5,7 @@ import 'package:freshfood_app/common/icon_navigator_bar.dart';
 import 'package:freshfood_app/module/home/screens/home.dart';
 import 'package:freshfood_app/module/auth/screens/profile.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Fresh Food App',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
       ),
       home: const MyHomePage(title: 'Fresh Food App'),
     );

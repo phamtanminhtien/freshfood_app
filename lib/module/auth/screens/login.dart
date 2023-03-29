@@ -45,64 +45,126 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: primaryColor,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              // mainAxisSize: MainAxisSize.min,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        farmServiceIcon,
-                        width: 300,
-                        height: 250,
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Stack(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Color(0x00FFFFFF),
+                    Positioned(
+                      //<-- SEE HERE
+                      right: -80,
+                      top: -80,
+                      child: Container(
+                        width: 250,
+                        height: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(200),
+                        ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text('Connect your Wallet',
-                              style: GoogleFonts.getFont(
-                                'Poppins',
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                              )),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                metamaskButton.build(context),
-                                walletConnectButton.build(context),
-                              ],
-                            ),
-                          ),
-                        ],
+                    ),
+                    Positioned(
+                      //<-- SEE HERE
+                      right: -60,
+                      top: -60,
+                      child: Container(
+                        width: 180,
+                        height: 180,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(200),
+                        ),
                       ),
                     ),
                   ],
+                ),
+                Positioned(
+                  //<-- SEE HERE
+                  left: -150,
+                  bottom: -200,
+                  child: Container(
+                    width: 400,
+                    height: 400,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(200),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.center,
+                  //<-- SEE HER
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          farmServiceIcon,
+                          width: 300,
+                          height: 250,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 200,
+                              decoration: const BoxDecoration(
+                                color: Color(0x00FFFFFF),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text('Connect your Wallet',
+                                      style: GoogleFonts.getFont(
+                                        'Poppins',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20,
+                                      )),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 20, 0, 20),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        metamaskButton.build(context),
+                                        walletConnectButton.build(context),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
