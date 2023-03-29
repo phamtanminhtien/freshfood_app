@@ -5,9 +5,6 @@ import 'package:freshfood_app/module/home/widgets/field_card.dart';
 import 'package:freshfood_app/module/home/widgets/weather_cart.dart';
 import '../../../constant.dart';
 
-const double paddingHorizontal = 20;
-const double bgHeightDefault = 200;
-
 final List<Field> fields = [
   Field(
     imageUrl:
