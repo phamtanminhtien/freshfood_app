@@ -5,6 +5,7 @@ import 'package:freshfood_app/common/icon_navigator_bar.dart';
 import 'package:freshfood_app/module/home/screens/home.dart';
 import 'package:freshfood_app/module/auth/screens/profile.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
+import 'package:freshfood_app/module/product/screens/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -48,8 +49,7 @@ class PageType {
 
 final List<PageType> pages = [
   const PageType(page: Home(), backgroundColor: homeBackgroundColor),
-  const PageType(page: Home(), backgroundColor: homeBackgroundColor),
-  // const PageType(page: Home(), backgroundColor: homeBackgroundColor),
+  const PageType(page: ProductScreen(), backgroundColor: homeBackgroundColor),
   const PageType(page: LoginScreen(), backgroundColor: primaryColor),
   const PageType(page: ProfileScreen(), backgroundColor: homeBackgroundColor),
 ];
