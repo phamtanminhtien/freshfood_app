@@ -98,16 +98,16 @@ final List<Field> fields = [
   ),
 ];
 
-class Home extends StatefulWidget {
-  const Home({
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({
     super.key,
   });
 
   @override
-  State<Home> createState() => _Home();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _Home extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   double bgHeight = 200;
 
   void calculateHeight(double position) {

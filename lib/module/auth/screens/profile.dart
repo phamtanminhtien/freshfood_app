@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freshfood_app/common/app_bar_custom.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:freshfood_app/constant.dart';
+import 'package:freshfood_app/module/auth/providers/metamask.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,6 +14,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isEdit = false;
+
+  WalletProvider myWallet = WalletProvider();
+
+  var _session, _uri, _signature, session, myAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          "0x123456789",
+                          _session?.account ?? "No account connected",
                           style: GoogleFonts.getFont('Poppins',
                               color: Colors.black,
                               fontSize: 16,

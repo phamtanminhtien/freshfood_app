@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:freshfood_app/constant.dart';
+import 'package:freshfood_app/main_screen.dart';
+import 'package:freshfood_app/module/auth/providers/metamask.dart';
 import 'package:freshfood_app/module/auth/widgets/wallet_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,19 +13,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
-
   String metamaskIcon = 'assets/images/metamask.svg';
   String walletConnectIcon = 'assets/images/walletconnect.svg';
   String farmServiceIcon = 'assets/images/farmservice.png';
 
-  WalletButton metamaskButton = WalletButton(
-    icon: 'assets/images/metamask.svg',
-    onTap: () {
-      print('Metamask button tapped');
-    },
-  );
+  WalletProvider walletProvider = WalletProvider();
+
+  var _session, _uri, _signature, session;
 
   WalletButton walletConnectButton = WalletButton(
     icon: 'assets/images/walletconnect.svg',
@@ -36,12 +30,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // connector.on(
+    //     'connect',
+    //     (session) => setState(
+    //           () {
+    //             _session = _session;
+    //           },
+    //         ));
+    // connector.on(
+    //     'session_update',
+    //     (payload) => setState(() {
+    //           _session = payload;
+    //           print(_session.accounts[0]);
+    //           print(_session.chainId);
+    //         }));
+    // connector.on(
+    //     'disconnect',
+    //     (payload) => setState(() {
+    //           _session = null;
+    //         }));
     return Scaffold(
-      key: scaffoldKey,
       backgroundColor: primaryColor,
       body: SafeArea(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
@@ -152,7 +163,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        metamaskButton.build(context),
+                                        WalletButton(
+                                          icon: 'assets/images/metamask.svg',
+                                          onTap: () async {
+                                            await walletProvider
+                                                .connectToWallet()
+                                                .then((data) => {
+                                                      print(data),
+                                                      if (data != null)
+                                                        {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const MainScreen(),
+                                                            ),
+                                                          )
+                                                        }
+                                                    });
+                                          },
+                                        ).build(context),
                                         walletConnectButton.build(context),
                                       ],
                                     ),
