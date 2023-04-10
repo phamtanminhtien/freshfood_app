@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:freshfood_app/constant.dart';
+import 'package:provider/provider.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
-import 'package:freshfood_app/module/auth/screens/profile.dart';
-import 'package:freshfood_app/module/home/screens/home.dart';
-import 'package:freshfood_app/module/product/screens/product.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'module/auth/providers/metamask.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => WalletProvider()),
+    ], child: const FreshfoodApp()),
+  );
 }
 
 const Radius navigatorBarRadius = Radius.circular(20);
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FreshfoodApp extends StatelessWidget {
+  const FreshfoodApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +26,38 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
       ),
-      home: const MyHomePage(title: 'Fresh Food App'),
+      home: const FreshFoodHomePage(title: 'Fresh Food App'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class FreshFoodHomePage extends StatefulWidget {
+  const FreshFoodHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FreshFoodHomePage> createState() => _FreshFoodHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _FreshFoodHomePageState extends State<FreshFoodHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WalletProvider walletProvider =
+        Provider.of<WalletProvider>(context, listen: false);
+    walletProvider.initWalletConnect();
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: LoginScreen(),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
