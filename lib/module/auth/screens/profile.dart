@@ -19,11 +19,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<WalletProvider>(builder: (context, walletProvider, child) {
-      String myAccount = walletProvider.getAccount(0);
-      var balanceBigInt = walletProvider.getBalance(walletProvider.account);
-      String balance = balanceBigInt.toString();
-      // String myAccount = "0x123456789abcdef";
-      // String balance = "100";
+      // String myAccount = walletProvider.getAccount(0);
+      // var balanceBigInt = walletProvider.getBalance(walletProvider.account);
+      // String balance = balanceBigInt.toString();
+      String myAccount = "0x123456789abcdef";
+      String balance = "100";
 
       return Scaffold(
           appBar: const AppBarCustom(

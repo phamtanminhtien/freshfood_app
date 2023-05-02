@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freshfood_app/common/icon_navigator_bar.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/module/auth/screens/profile.dart';
+import 'package:freshfood_app/module/dashboard/screens/dashboard.dart';
 import 'package:freshfood_app/module/home/screens/home.dart';
 import 'package:freshfood_app/module/product/screens/product.dart';
 
@@ -17,7 +18,7 @@ class PageType {
 final List<PageType> pages = [
   const PageType(page: HomeScreen(), backgroundColor: homeBackgroundColor),
   const PageType(page: ProductScreen(), backgroundColor: homeBackgroundColor),
-  const PageType(page: ProductScreen(), backgroundColor: primaryColor),
+  const PageType(page: DashboardScreen(), backgroundColor: primaryColor),
   const PageType(page: ProfileScreen(), backgroundColor: homeBackgroundColor),
 ];
 
