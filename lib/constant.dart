@@ -9,3 +9,5 @@ const Color secondaryColor = Color(0xFF1E1E1E);
 const Color grayColor = Color(0x45454545);
 const Color homeBackgroundColor = Color(0xFFEFEFEF);
 const Color textColor = Color(0xFF1E1E1E);
+const Color textBlueColor = Color.fromARGB(255, 1, 110, 188);
+const Color textOrangeColor = Color.fromARGB(255, 255, 149, 0);

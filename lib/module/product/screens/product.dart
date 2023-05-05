@@ -35,8 +35,8 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const AppBarCustom(
-            isBack: true,
-            isLogout: true,
+            isBack: false,
+            isLogout: false,
             nameScreen: "Create",
             descriptionScreen: "or update a product"),
         body: SingleChildScrollView(

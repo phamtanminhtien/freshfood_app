@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freshfood_app/module/home/models/field.dart';
 import 'package:freshfood_app/module/home/widgets/field_card.dart';
-import 'package:freshfood_app/module/home/widgets/weather_cart.dart';
+import 'package:freshfood_app/module/home/widgets/weather_card.dart';
 import '../../../constant.dart';
 
 final List<Field> fields = [

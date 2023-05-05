@@ -27,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       return Scaffold(
           appBar: const AppBarCustom(
-              isBack: true,
+              isBack: false,
               isLogout: true,
               nameScreen: "Profile",
               descriptionScreen: "views the profile"),

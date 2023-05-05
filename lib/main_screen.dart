@@ -18,7 +18,7 @@ class PageType {
 final List<PageType> pages = [
   const PageType(page: HomeScreen(), backgroundColor: homeBackgroundColor),
   const PageType(page: ProductScreen(), backgroundColor: homeBackgroundColor),
-  const PageType(page: DashboardScreen(), backgroundColor: primaryColor),
+  const PageType(page: DashboardScreen(), backgroundColor: homeBackgroundColor),
   const PageType(page: ProfileScreen(), backgroundColor: homeBackgroundColor),
 ];
 

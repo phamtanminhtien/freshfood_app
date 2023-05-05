@@ -14,6 +14,7 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
 
   final String nameScreen;
   final String descriptionScreen;
+  final Function? onBackChanged;
 
   const AppBarCustom({
     Key? key,
@@ -21,6 +22,7 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
     required this.isLogout,
     required this.nameScreen,
     required this.descriptionScreen,
+    this.onBackChanged,
   }) : super(key: key);
 
   @override
@@ -59,7 +61,9 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: isBack
             ? GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  onBackChanged!();
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset(
