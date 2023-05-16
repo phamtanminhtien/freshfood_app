@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/main_screen.dart';
-import 'package:freshfood_app/module/auth/providers/metamask.dart';
+import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:freshfood_app/module/auth/widgets/wallet_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -165,34 +165,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           WalletButton(
-                                              icon:
-                                                  'assets/images/metamask.svg',
-                                              // onTap: () async {
-                                              //   await walletProvider
-                                              //       .createSession()
-                                              //       .then((status) => {
-                                              //             if (status != null)
-                                              //               {
-                                              //                 Navigator.push(
-                                              //                   context,
-                                              //                   MaterialPageRoute(
-                                              //                     builder:
-                                              //                         (context) =>
-                                              //                             const MainScreen(),
-                                              //                   ),
-                                              //                 )
-                                              //               }
-                                              //           });
-                                              // },
-                                              onTap: () => {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const MainScreen(),
-                                                      ),
-                                                    )
-                                                  }).build(context),
+                                            icon: 'assets/images/metamask.svg',
+                                            onTap: () async {
+                                              await walletProvider
+                                                  .createSession()
+                                                  .then((status) => {
+                                                        if (status != null)
+                                                          {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const MainScreen(),
+                                                              ),
+                                                            )
+                                                          }
+                                                      });
+                                            },
+                                          ).build(context),
                                           walletConnectButton.build(context),
                                         ],
                                       ),

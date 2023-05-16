@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'module/auth/providers/metamask.dart';
+import 'module/providers/walletconnect.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => WalletProvider()),

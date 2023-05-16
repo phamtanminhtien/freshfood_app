@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/module/product/widgets/input_element.dart';
+import 'package:freshfood_app/module/providers/walletconnect.dart';
+import 'package:provider/provider.dart';
 
 class TabCreateProduct extends StatefulWidget {
   const TabCreateProduct({Key? key}) : super(key: key);
@@ -12,10 +14,11 @@ class TabCreateProduct extends StatefulWidget {
 class _TabCreateProductState extends State<TabCreateProduct> {
   bool isSelected = false;
   bool isSubmit = false;
-  String name = "";
-  String origin = "";
+  String productName = "";
+  String productOrigin = "";
   @override
   Widget build(BuildContext context) {
+    var walletProvider = Provider.of<WalletProvider>(context);
     return GestureDetector(
         child: Container(
       child: Column(
@@ -24,7 +27,7 @@ class _TabCreateProductState extends State<TabCreateProduct> {
             icon: Icons.title,
             label: "Product name",
             onChange: (value) => {
-              name = value,
+              productName = value,
               setState(() {
                 isSubmit = false;
               })
@@ -34,7 +37,7 @@ class _TabCreateProductState extends State<TabCreateProduct> {
               icon: Icons.location_on,
               label: "Origin",
               onChange: (value) => {
-                    origin = value,
+                    productOrigin = value,
                     setState(() {
                       isSubmit = false;
                     })
@@ -50,13 +53,21 @@ class _TabCreateProductState extends State<TabCreateProduct> {
             width: MediaQuery.of(context).size.width,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                if (name == "" || origin == "") {
+              onPressed: () async {
+                if (productName == "" || productOrigin == "") {
                   setState(() {
                     isSubmit = true;
                   });
-                } else
-                  print(name + "-----" + origin);
+                } else {
+                  await walletProvider
+                      .addProduct(productName, productOrigin)
+                      .then((result) =>
+                          {walletProvider.showAlertDialog(context, result)})
+                      .catchError((err) => {
+                            walletProvider.showAlertDialog(
+                                context, err.toString())
+                          });
+                }
               },
               child: const Text("Save"),
               style: ElevatedButton.styleFrom(

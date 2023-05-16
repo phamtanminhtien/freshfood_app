@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freshfood_app/module/auth/providers/metamask.dart';
+import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:freshfood_app/module/auth/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';

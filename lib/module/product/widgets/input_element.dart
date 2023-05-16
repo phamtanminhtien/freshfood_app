@@ -51,7 +51,6 @@ class _InputElementState extends State<InputElement> {
                       })
                     },
                     onChanged: (value) {
-                      print(value);
                       widget.onChange(value);
                     },
                     decoration: InputDecoration(

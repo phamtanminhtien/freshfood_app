@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/module/home/models/field.dart';
 import 'package:freshfood_app/module/home/screens/home.dart';
+import 'package:freshfood_app/module/product/models/product.dart';
 
 class FieldCard extends StatelessWidget {
-  final Field field;
+  final Product product;
 
-  const FieldCard({Key? key, required this.field}) : super(key: key);
+  final imageDefault =
+      "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg";
+
+  const FieldCard({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class FieldCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: Image.network(
-                      field.imageUrl,
+                      product.image ?? imageDefault,
                       height: 150,
                       fit: BoxFit.cover,
                     ),
@@ -49,7 +53,7 @@ class FieldCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            field.name,
+                            "#${product.productId} - ${product.name}",
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -63,7 +67,7 @@ class FieldCard extends StatelessWidget {
                                 size: 15,
                               ),
                               Text(
-                                field.location,
+                                product.origin,
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w300,

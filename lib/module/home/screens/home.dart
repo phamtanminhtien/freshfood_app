@@ -3,6 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freshfood_app/module/home/models/field.dart';
 import 'package:freshfood_app/module/home/widgets/field_card.dart';
 import 'package:freshfood_app/module/home/widgets/weather_card.dart';
+import 'package:freshfood_app/module/product/models/product.dart';
+import 'package:freshfood_app/module/providers/restapi.dart';
+import 'package:freshfood_app/module/providers/walletconnect.dart';
+import 'package:provider/provider.dart';
 import '../../../constant.dart';
 
 final List<Field> fields = [
@@ -141,6 +145,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).viewPadding.top;
+    final walletProvider = Provider.of<WalletProvider>(context);
+    var productFuture =
+        walletProvider.getProductByOwner(walletProvider.account);
+    // final apiProvider = RestApiProvider('https://be.freshfood.lalo.com.vn');
+
+    // apiProvider.get('object-stores').then((response) {
+    //   // Handle the response data here
+    //   print(response);
+    // }).catchError((error) {
+    //   // Handle any errors or exceptions here
+    //   print('API Error: $error');
+    // });
+
     // create container with background i circle
     return Stack(
       children: [
@@ -233,13 +250,34 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 15),
                         ),
                       ),
-                      Column(
-                        children: fields
-                            .map((e) => FieldCard(
-                                  field: e,
-                                ))
-                            .toList(),
-                      )
+                      FutureBuilder<List<dynamic>>(
+                          future: productFuture,
+                          builder:
+                              (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                            if (snapshot.hasData) {
+                              final data = snapshot.data;
+                              List<Product> products = [];
+                              data?[0]
+                                      ?.map((e) => products.add(Product(
+                                            productId: e[0].toString(),
+                                            name: e[1],
+                                            origin: e[2],
+                                          )))
+                                      .toList() ??
+                                  [];
+                              return Column(
+                                children: products
+                                    .map((e) => FieldCard(
+                                          product: e,
+                                        ))
+                                    .toList(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          })
                     ],
                   ))),
         )
