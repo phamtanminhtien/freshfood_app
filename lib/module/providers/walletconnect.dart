@@ -149,6 +149,7 @@ class WalletProvider extends ChangeNotifier {
 
   Future<List<dynamic>> getOwnerByAddress(EthereumAddress address) async {
     List<dynamic> result = await query("getOwnerByAddress", [address]);
+    print(result);
     return result;
   }
 
@@ -229,7 +230,6 @@ class WalletProvider extends ChangeNotifier {
 
       //disconnect();
       return "Transaction is successful.\nHash: ${result.toString()}";
-      ;
     } catch (e) {
       return "Transaction is rejected";
     }

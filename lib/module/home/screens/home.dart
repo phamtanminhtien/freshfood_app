@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       left: paddingHorizontal,
                       right: paddingHorizontal),
                   width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -149,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Container(
                         alignment: Alignment.center,
-                        height: 450,
                         child: FutureBuilder<List<dynamic>>(
                             future: productFuture,
                             builder: (context,
@@ -185,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 }
                                 return Container(
-                                  padding: const EdgeInsets.only(bottom: 300),
                                   child: Column(
                                     children: products
                                         .map((e) => FieldCard(

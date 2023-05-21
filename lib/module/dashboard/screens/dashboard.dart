@@ -118,8 +118,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         if (snapshot.hasData) {
                           final data = snapshot.data;
                           List<Product> products = [];
+                          int status = -1;
                           data?[0]
                                   ?.map((e) => {
+                                        status = 1,
+                                        print(e[4]),
                                         products.add(Product(
                                           productId: e[0].toString(),
                                           name: e[1],
