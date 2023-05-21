@@ -107,7 +107,7 @@
       },
       {
         "internalType": "string",
-        "name": "_url",
+        "name": "_obecjectId",
         "type": "string"
       },
       {
@@ -119,6 +119,11 @@
         "internalType": "string",
         "name": "_location",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_timestamp",
+        "type": "uint256"
       }
     ],
     "name": "addLog",
@@ -136,6 +141,11 @@
       {
         "internalType": "string",
         "name": "_origin",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_image",
         "type": "string"
       }
     ],
@@ -258,7 +268,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getLogById",
+    "name": "getLog",
     "outputs": [
       {
         "components": [
@@ -276,6 +286,11 @@
             "internalType": "string",
             "name": "location",
             "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Log[]",
@@ -381,7 +396,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getProductById",
+    "name": "getProduct",
     "outputs": [
       {
         "components": [
@@ -433,6 +448,11 @@
                 "internalType": "string",
                 "name": "location",
                 "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
               }
             ],
             "internalType": "struct Log[]",
@@ -443,6 +463,11 @@
             "internalType": "bool",
             "name": "verified",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
           }
         ],
         "internalType": "struct Product",
@@ -513,6 +538,11 @@
                 "internalType": "string",
                 "name": "location",
                 "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
               }
             ],
             "internalType": "struct Log[]",
@@ -523,6 +553,95 @@
             "internalType": "bool",
             "name": "verified",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Product[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProducts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "productId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "origin",
+            "type": "string"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct Owner[]",
+            "name": "ownerList",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "objectId",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "hash",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Log[]",
+            "name": "logList",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "bool",
+            "name": "verified",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
           }
         ],
         "internalType": "struct Product[]",
@@ -655,6 +774,11 @@
         "internalType": "bool",
         "name": "verified",
         "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "image",
+        "type": "string"
       }
     ],
     "stateMutability": "view",

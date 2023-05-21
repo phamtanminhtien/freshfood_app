@@ -70,7 +70,8 @@ class WalletProvider extends ChangeNotifier {
   String contractAddress = dotenv.get("FRESHFOOD_CONTRACT_ADDRESS");
   String infura =
       "https://sepolia.infura.io/v3/" + dotenv.get('INFURA_API_KEY');
-
+  String devRpcUrl = dotenv.get('DEV_RPC_URL');
+  String etherscanUrl = dotenv.get('ETHERSCAN_URL');
   Future createSession() async {
     if (!_connector.connected) {
       try {
@@ -104,7 +105,7 @@ class WalletProvider extends ChangeNotifier {
     );
 
     //_ethereum = Web3Client(infura, Client());
-    _ethereum = Web3Client("http://192.168.1.7:7545/", Client());
+    _ethereum = Web3Client(devRpcUrl, Client());
     _provider = EthereumWalletConnectProvider(_connector);
 
     // Register session request callback
@@ -159,6 +160,7 @@ class WalletProvider extends ChangeNotifier {
 
   Future<List<dynamic>> getProductByOwner(EthereumAddress address) async {
     List<dynamic> result = await query("getProductByOwner", [address]);
+    print(result);
     return result;
   }
 
@@ -167,15 +169,20 @@ class WalletProvider extends ChangeNotifier {
     return response;
   }
 
-  Future<String> addProduct(String name, String origin) async {
-    var response = await submit("addProduct", [name, origin]);
+  Future<String> addProduct(String name, String origin, String imageUrl) async {
+    var response = await submit("addProduct", [name, origin, imageUrl]);
     return response;
   }
 
-  Future<String> addLog(
-      int productId, String objectId, String hash, String location) async {
-    var response = await submit(
-        "addLog", [BigInt.from(productId), objectId, hash, location]);
+  Future<String> addLog(int productId, String objectId, String hash,
+      String location, int timestamp) async {
+    var response = await submit("addLog", [
+      BigInt.from(productId),
+      objectId,
+      hash,
+      location,
+      BigInt.from(timestamp)
+    ]);
     return response;
   }
 
@@ -188,8 +195,6 @@ class WalletProvider extends ChangeNotifier {
   }
 
   Future<String> submit(String functionName, List<dynamic> args) async {
-    Future.delayed(const Duration(seconds: 0), () => openWalletApp());
-
     try {
       DeployedContract contract = await getDeployedContract();
       final ethFunction = contract.function(functionName);
@@ -211,6 +216,8 @@ class WalletProvider extends ChangeNotifier {
       //     function: ethFunction,
       //     parameters: args,
       //     maxGas: 1000000);
+
+      Future.delayed(const Duration(seconds: 1), () => openWalletApp());
 
       final result = await _ethereum.sendTransaction(
         credential,
@@ -234,6 +241,8 @@ class WalletProvider extends ChangeNotifier {
   }
 
   showAlertDialog(BuildContext context, String message) {
+    bool typeSuccess = message.contains("rejected") ? false : true;
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -248,12 +257,65 @@ class WalletProvider extends ChangeNotifier {
               ),
             ),
             actions: [
-              ElevatedButton(
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              typeSuccess
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.green),
+                          ),
+                          onPressed: () {
+                            var hash = message.split("Hash: ")[1].trim();
+                            launchUrl(Uri.parse("$etherscanUrl/$hash"));
+                            Navigator.of(context).pop();
+                            Clipboard.setData(ClipboardData(
+                                text: message.split("Hash: ")[1].trim()));
+                          },
+                          child: const Text(
+                            'Copy',
+                            style: TextStyle(
+                              fontFamily: 'vtks_distress',
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.green),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              fontFamily: 'vtks_distress',
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  : ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'OK',
+                        style: TextStyle(
+                          fontFamily: 'vtks_distress',
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
             ],
           );
         });

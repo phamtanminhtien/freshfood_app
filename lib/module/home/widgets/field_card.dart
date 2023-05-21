@@ -14,6 +14,7 @@ class FieldCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("imgaeUrl: ${product.image}");
     return Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: Container(
@@ -36,11 +37,12 @@ class FieldCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Image.network(
-                      product.image ?? imageDefault,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+                    child: SizedBox(
+                        height: 150,
+                        child: Image.network(
+                          product.image != "" ? product.image! : imageDefault,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   SizedBox.fromSize(
                     size: const Size.fromHeight(10),

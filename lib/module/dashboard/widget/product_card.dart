@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/module/dashboard/screens/product_view.dart';
 import 'package:freshfood_app/module/product/models/product.dart';
+import 'package:freshfood_app/module/providers/restapi.dart';
+import 'package:freshfood_app/module/utils/hash-object.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final Function onPressProduct;
+
+  final imageDefault =
+      "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg";
 
   const ProductCard(
       {Key? key, required this.product, required this.onPressProduct})
@@ -44,8 +49,10 @@ class ProductCard extends StatelessWidget {
                           ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20)),
-                            child: Image.asset(
-                              "assets/images/field.png",
+                            child: Image.network(
+                              product.image != ""
+                                  ? product.image!
+                                  : imageDefault,
                               width: 60,
                               height: 40,
                               fit: BoxFit.cover,
@@ -59,7 +66,7 @@ class ProductCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  product.name,
+                                  '#${product.productId} - ${product.name}',
                                   style: const TextStyle(
                                       color: textColor,
                                       fontWeight: FontWeight.bold,

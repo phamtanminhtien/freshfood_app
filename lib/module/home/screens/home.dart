@@ -9,99 +9,6 @@ import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:provider/provider.dart';
 import '../../../constant.dart';
 
-final List<Field> fields = [
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 1",
-    location: "Location 1",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 2",
-    location: "Location 2",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 3",
-    location: "Location 3",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 4",
-    location: "Location 4",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 5",
-    location: "Location 5",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 6",
-    location: "Location 6",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 7",
-    location: "Location 7",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 8",
-    location: "Location 8",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 9",
-    location: "Location 9",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 10",
-    location: "Location 10",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 11",
-    location: "Location 11",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 12",
-    location: "Location 12",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 13",
-    location: "Location 13",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 14",
-    location: "Location 14",
-  ),
-  Field(
-    imageUrl:
-        "https://cdn.mos.cms.futurecdn.net/sKbruCKdeZpKnNpcwf35fc-1200-80.jpg",
-    name: "Field 15",
-    location: "Location 15",
-  ),
-];
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -148,17 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final walletProvider = Provider.of<WalletProvider>(context);
     var productFuture =
         walletProvider.getProductByOwner(walletProvider.account);
-    // final apiProvider = RestApiProvider('https://be.freshfood.lalo.com.vn');
 
-    // apiProvider.get('object-stores').then((response) {
-    //   // Handle the response data here
-    //   print(response);
-    // }).catchError((error) {
-    //   // Handle any errors or exceptions here
-    //   print('API Error: $error');
-    // });
-
-    // create container with background i circle
     return Stack(
       children: [
         Container(
@@ -243,41 +140,67 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Padding(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
                         child: Text(
-                          "My Fields",
+                          "My Products",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
                               fontSize: 15),
                         ),
                       ),
-                      FutureBuilder<List<dynamic>>(
-                          future: productFuture,
-                          builder:
-                              (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                            if (snapshot.hasData) {
-                              final data = snapshot.data;
-                              List<Product> products = [];
-                              data?[0]
-                                      ?.map((e) => products.add(Product(
-                                            productId: e[0].toString(),
-                                            name: e[1],
-                                            origin: e[2],
-                                          )))
-                                      .toList() ??
-                                  [];
-                              return Column(
-                                children: products
-                                    .map((e) => FieldCard(
-                                          product: e,
-                                        ))
-                                    .toList(),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          })
+                      Container(
+                        alignment: Alignment.center,
+                        height: 450,
+                        child: FutureBuilder<List<dynamic>>(
+                            future: productFuture,
+                            builder: (context,
+                                AsyncSnapshot<List<dynamic>> snapshot) {
+                              if (snapshot.hasData) {
+                                final data = snapshot.data;
+                                List<Product> products = [];
+                                data?[0]
+                                        ?.map((e) => products.add(Product(
+                                              productId: e[0].toString(),
+                                              name: e[1],
+                                              origin: e[2],
+                                              image: e[6],
+                                            )))
+                                        .toList() ??
+                                    [];
+
+                                if (products.isEmpty) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      children: const [
+                                        Text(
+                                          "No data",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                            "Please add product to view in here")
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return Container(
+                                  padding: const EdgeInsets.only(bottom: 300),
+                                  child: Column(
+                                    children: products
+                                        .map((e) => FieldCard(
+                                              product: e,
+                                            ))
+                                        .toList(),
+                                  ),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("Error: ${snapshot.error}");
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            }),
+                      )
                     ],
                   ))),
         )

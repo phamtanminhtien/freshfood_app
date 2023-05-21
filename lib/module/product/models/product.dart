@@ -6,6 +6,7 @@ class Product {
   String? image;
   Map<String, dynamic>? location;
   Map<String, dynamic>? sensors;
+  List<dynamic>? log;
 
   Product({
     required this.productId,
@@ -15,5 +16,6 @@ class Product {
     this.image,
     this.location,
     this.sensors,
+    this.log,
   });
 }

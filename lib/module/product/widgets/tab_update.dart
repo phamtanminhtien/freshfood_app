@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:freshfood_app/constant.dart';
 import 'package:freshfood_app/module/product/models/product.dart';
@@ -9,7 +5,6 @@ import 'package:freshfood_app/module/providers/restapi.dart';
 import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 class TabUpdateProduct extends StatefulWidget {
   const TabUpdateProduct({Key? key}) : super(key: key);
@@ -31,19 +26,6 @@ class _TabUpdateProductState extends State<TabUpdateProduct> {
 
   String productIdSeclected = "";
 
-  File? _image;
-
-  Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: source);
-
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -64,6 +46,11 @@ class _TabUpdateProductState extends State<TabUpdateProduct> {
     sensorMoreNameController.dispose();
     sensorMoreValueController.dispose();
     super.dispose();
+  }
+
+  int getTimestamp() {
+    var now = DateTime.now();
+    return now.millisecondsSinceEpoch;
   }
 
   @override
@@ -121,62 +108,6 @@ class _TabUpdateProductState extends State<TabUpdateProduct> {
           ),
           const SizedBox(
             height: 20,
-          ),
-          Container(
-            width: 360.0,
-            height: 100.0,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10)),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (_image != null)
-                  Positioned.fill(
-                    child: Image.file(
-                      _image!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                Positioned(
-                  child: IconButton(
-                    icon: const Icon(Icons.image),
-                    color: primaryColor,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Choose product image'),
-                            content: SingleChildScrollView(
-                              child: ListBody(
-                                children: [
-                                  GestureDetector(
-                                    child: const Text('Gallery'),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      _pickImage(ImageSource.gallery);
-                                    },
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  GestureDetector(
-                                    child: const Text('Camera'),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      _pickImage(ImageSource.camera);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
           ),
           const SizedBox(
             height: 20,
@@ -305,14 +236,17 @@ class _TabUpdateProductState extends State<TabUpdateProduct> {
                   ]
                 };
 
-                print(data);
-
                 await apiProvider
                     .post('object-stores', data)
                     .then((response) async {
                   await walletProvider
-                      .addLog(int.parse(productIdSeclected), response["_id"],
-                          response["hash"], "")
+                      .addLog(
+                        int.parse(productIdSeclected),
+                        response["_id"],
+                        response["hash"],
+                        "",
+                        getTimestamp(),
+                      )
                       .then((result) =>
                           {walletProvider.showAlertDialog(context, result)})
                       .catchError((err) => {
