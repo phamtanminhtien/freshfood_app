@@ -50,8 +50,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _pageController.animateToPage(pageViewIndex,
           duration: Duration(milliseconds: 500), curve: Curves.ease);
     }
-    print("id: " + productPressed.productId);
-    print("name: " + productPressed.name);
   }
 
   @override
@@ -121,14 +119,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           int status = -1;
                           data?[0]
                                   ?.map((e) => {
-                                        status = 1,
-                                        print(e[4]),
+                                        e[4].forEach((el) => {
+                                              if (el[0] == 'done')
+                                                status = 2
+                                              else if (el[0] == 'delivery')
+                                                status = 1
+                                              else if (el[0] == 'create')
+                                                status = 0
+                                            }),
                                         products.add(Product(
                                           productId: e[0].toString(),
                                           name: e[1],
                                           origin: e[2],
-                                          log: e[4].last,
+                                          log: e[4],
                                           image: e[6],
+                                          status: status,
                                         ))
                                       })
                                   .toList() ??

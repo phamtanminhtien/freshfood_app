@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       left: paddingHorizontal,
                       right: paddingHorizontal),
                   width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,

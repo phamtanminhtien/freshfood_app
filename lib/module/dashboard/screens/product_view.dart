@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:freshfood_app/common/app_bar_custom.dart';
-import 'package:freshfood_app/module/dashboard/widget/product_chart.dart';
-import 'package:freshfood_app/module/dashboard/widget/dashboard_chart.dart';
 import 'package:freshfood_app/constant.dart';
-import 'package:freshfood_app/module/providers/restapi.dart';
-import 'package:freshfood_app/module/utils/hash-object.dart';
-import 'package:provider/single_child_widget.dart';
+import 'package:freshfood_app/module/dashboard/widget/product_chart.dart';
 import 'package:freshfood_app/module/product/models/product.dart';
-
-import '../widget/product_card.dart';
+import 'package:freshfood_app/module/providers/restapi.dart';
 
 class ProductView extends StatelessWidget {
   final Product product;
@@ -18,12 +12,10 @@ class ProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("product view::::" + product.name);
-
-    var objectData = {};
-    String objectID = product.log?[0].toString() ?? "";
-    String objectHash = product.log?[1].toString() ?? "";
-    if (objectID.isEmpty || objectID.contains("create")) {
+    String objectID = product.log?.last[0].toString() ?? "";
+    if (objectID.isEmpty ||
+        objectID.contains("create") ||
+        product.status == -1) {
       return Container(
         alignment: Alignment.center,
         child: Column(
@@ -37,14 +29,63 @@ class ProductView extends StatelessWidget {
           ],
         ),
       );
+    } else if (objectID.contains("delivery") || product.status == 1) {
+      return Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "#${product.productId} - ${product.name}",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              "is been delivering",
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            Image.asset(
+              "assets/images/farmservice.png",
+              width: 200,
+              height: 200,
+            ),
+            const Text(
+              "Please view on web:",
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+                onPressed: () => {
+                      Navigator.pushNamed(context, '/webview', arguments: {
+                        'url': 'https://freshfood.lalo.com.vn',
+                        'title': 'Freshfood'
+                      })
+                    },
+                child: Text("https://freshfood.lalo.com.vn",
+                    style: TextStyle(fontSize: 20)))
+          ],
+        ),
+      );
     }
+
+    String listObjectID = "";
+    product.log?.forEach((e) => {
+          if (isSha256(e[0]))
+            {
+              listObjectID.isEmpty
+                  ? listObjectID += e[0]
+                  : listObjectID += "," + e[0]
+            }
+        });
+
     var productFuture = apiProvider.get('object-stores/$objectID');
+    var listProductFuture = apiProvider.get('object-stores?id=$listObjectID');
 
     return SingleChildScrollView(
         child: Column(children: [
       Container(
-          padding: EdgeInsets.only(top: 20),
-          height: 300,
+          padding: const EdgeInsets.only(top: 20),
+          height: 320,
           child: AspectRatio(
             aspectRatio: 1.23,
             child: Stack(
@@ -52,12 +93,42 @@ class ProductView extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16, left: 6),
-                        child: ProductChart(),
-                      ),
-                    ),
+                    FutureBuilder<dynamic>(
+                        future: listProductFuture,
+                        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            final data = snapshot.data;
+
+                            var listDateChart = [];
+                            var listDataChart = [];
+
+                            data.forEach((d) => {
+                                  listDateChart.add(d['date']),
+                                  listDataChart.add(d['table'].sublist(0, 4))
+                                });
+
+                            // var dateChart = data['date'];
+                            // var dataChart = data['table'].sublist(0,
+                            //     4); // get the first 4 sensors to show in chart
+
+                            var apiChart = {
+                              "date": listDateChart,
+                              "data": listDataChart
+                            };
+
+                            return Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 16, left: 6),
+                                child: ProductChart(apiChart: apiChart),
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("Error: ${snapshot.error}");
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        }),
                     const SizedBox(
                       height: 10,
                     ),
@@ -108,6 +179,8 @@ class ProductView extends StatelessWidget {
               var soilMoisture = data['table'][3]['value'];
 
               var moreSensors = data['table'].sublist(4);
+
+              //chart
 
               return Padding(
                   padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -418,4 +491,9 @@ Future<Table> moreSensorRows(List<dynamic> moreSensors) async {
         1: FlexColumnWidth(1),
       },
       children: rows);
+}
+
+bool isSha256(String input) {
+  var sha256Regex = RegExp(r'^[0-9a-f]{24}$');
+  return sha256Regex.hasMatch(input);
 }

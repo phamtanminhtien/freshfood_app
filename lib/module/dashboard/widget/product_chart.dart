@@ -2,39 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ProductChart extends StatefulWidget {
-  const ProductChart({super.key});
+  const ProductChart({super.key, required this.apiChart});
+
+  final Map<dynamic, dynamic> apiChart;
 
   @override
   State<StatefulWidget> createState() => DashboardChartState();
 }
 
 class DashboardChartState extends State<ProductChart> {
-  var apiData = {
-    "temperature": {
-      "labels": ["0:0:0 1/1/2015", "0:0:0 2/1/2015", "0:0:0 3/1/2015"],
-      "data": ["50", "50", "50"]
-    },
-    "humidity": {
-      "labels": ["0:0:0 1/1/2015", "0:0:0 2/1/2015", "0:0:0 3/1/2015"],
-      "data": ["50", "50", "50"]
-    },
-    "light": {
-      "labels": ["0:0:0 1/1/2015", "0:0:0 2/1/2015", "0:0:0 3/1/2015"],
-      "data": ["50", "50", "50"]
-    },
-    "soilMoisture": {
-      "labels": ["0:0:0 1/1/2015", "0:0:0 2/1/2015", "0:0:0 3/1/2015"],
-      "data": ["50", "50", "50"]
-    }
-  };
-
+  List<String> labels = [];
   @override
   void initState() {
     super.initState();
+    (widget.apiChart['date'] as List?)?.forEach((e) {
+      labels.add(e.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.apiChart['data'][0][2]["value"]);
     return LineChart(
       sampleData,
     );
@@ -46,9 +34,9 @@ class DashboardChartState extends State<ProductChart> {
         titlesData: titlesData,
         borderData: borderData,
         lineBarsData: lineBarsData,
-        minX: 0,
-        maxX: 14,
-        maxY: 4,
+        // minX: 0,
+        // maxX: 10,
+        maxY: 100,
         minY: 0,
       );
 
@@ -75,33 +63,38 @@ class DashboardChartState extends State<ProductChart> {
       );
 
   List<LineChartBarData> get lineBarsData => [
-        lineChartBarData1_1,
-        lineChartBarData1_2,
-        lineChartBarData1_3,
+        lineChartBarTemperature,
+        lineChartBarDataHumidity,
+        lineChartBarDataLight,
+        lineChartBarDataSoilMoisture,
       ];
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 10,
     );
     String text;
     switch (value.toInt()) {
-      case 1:
-        text = '1m';
+      case 0:
+        text = '0';
         break;
-      case 2:
-        text = '2m';
+      case 20:
+        text = '20';
         break;
-      case 3:
-        text = '3m';
+      case 40:
+        text = '40';
         break;
-      case 4:
-        text = '5m';
+      case 60:
+        text = '60';
         break;
-      case 5:
-        text = '6m';
+      case 80:
+        text = '80';
         break;
+      case 100:
+        text = '100';
+        break;
+
       default:
         return Container();
     }
@@ -119,28 +112,16 @@ class DashboardChartState extends State<ProductChart> {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 8,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('SEPT', style: style);
-        break;
-      case 7:
-        text = const Text('OCT', style: style);
-        break;
-      case 12:
-        text = const Text('DEC', style: style);
-        break;
-      default:
-        text = const Text('');
-        break;
-    }
+
+    //load data from apiChart date
+    String text = labels[value.toInt()];
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 10,
-      child: text,
+      space: 20,
+      child: Transform.rotate(angle: -120, child: Text(text, style: style)),
     );
   }
 
@@ -163,27 +144,22 @@ class DashboardChartState extends State<ProductChart> {
         ),
       );
 
-  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        isCurved: true,
-        color: Colors.green,
-        barWidth: 8,
-        isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 1.5),
-          FlSpot(5, 1.4),
-          FlSpot(7, 3.4),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
-      );
+  LineChartBarData get lineChartBarTemperature => LineChartBarData(
+          isCurved: true,
+          color: Colors.red,
+          barWidth: 8,
+          isStrokeCapRound: true,
+          dotData: FlDotData(show: false),
+          belowBarData: BarAreaData(show: false),
+          spots: [
+            for (int i = 0; i < widget.apiChart['data'].length; i++)
+              FlSpot(i.toDouble(),
+                  double.parse(widget.apiChart['data'][i][0]["value"]))
+          ]);
 
-  LineChartBarData get lineChartBarData1_2 => LineChartBarData(
+  LineChartBarData get lineChartBarDataHumidity => LineChartBarData(
         isCurved: true,
-        color: Colors.pink,
+        color: Colors.blue,
         barWidth: 8,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
@@ -191,29 +167,38 @@ class DashboardChartState extends State<ProductChart> {
           show: false,
           color: Colors.pink.withOpacity(0),
         ),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
+        spots: [
+          for (int i = 0; i < widget.apiChart['data'].length; i++)
+            FlSpot(i.toDouble(),
+                double.parse(widget.apiChart['data'][i][1]["value"]))
         ],
       );
 
-  LineChartBarData get lineChartBarData1_3 => LineChartBarData(
+  LineChartBarData get lineChartBarDataLight => LineChartBarData(
         isCurved: true,
-        color: Colors.cyan,
+        color: Colors.orange,
         barWidth: 8,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 2.8),
-          FlSpot(3, 1.9),
-          FlSpot(6, 3),
-          FlSpot(10, 1.3),
-          FlSpot(13, 2.5),
+        spots: [
+          for (int i = 0; i < widget.apiChart['data'].length; i++)
+            FlSpot(i.toDouble(),
+                double.parse(widget.apiChart['data'][i][2]["value"]))
+        ],
+      );
+
+  LineChartBarData get lineChartBarDataSoilMoisture => LineChartBarData(
+        isCurved: true,
+        color: Colors.green,
+        barWidth: 8,
+        isStrokeCapRound: true,
+        dotData: FlDotData(show: false),
+        belowBarData: BarAreaData(show: false),
+        spots: [
+          for (int i = 0; i < widget.apiChart['data'].length; i++)
+            FlSpot(i.toDouble(),
+                double.parse(widget.apiChart['data'][i][3]["value"]))
         ],
       );
 }
