@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Column(
                       children: [
                         Text(
-                          "1000",
+                          "No Data",
                           style: GoogleFonts.getFont('Poppins',
                               color: Colors.black,
                               fontSize: 14,

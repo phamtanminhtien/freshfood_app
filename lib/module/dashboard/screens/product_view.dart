@@ -38,6 +38,7 @@ class ProductView extends StatelessWidget {
           children: [
             Text(
               "#${product.productId} - ${product.name}",
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const Text(
@@ -57,11 +58,13 @@ class ProductView extends StatelessWidget {
             TextButton(
                 onPressed: () => {
                       Navigator.pushNamed(context, '/webview', arguments: {
-                        'url': 'https://freshfood.lalo.com.vn',
+                        'url':
+                            'https://freshfood.lalo.com.vn/tracking/${product.productId}',
                         'title': 'Freshfood'
                       })
                     },
-                child: Text("https://freshfood.lalo.com.vn",
+                child: Text(
+                    "https://freshfood.lalo.com.vn/tracking/${product.productId}",
                     style: TextStyle(fontSize: 20)))
           ],
         ),
@@ -138,7 +141,7 @@ class ProductView extends StatelessWidget {
             ),
           )),
       Container(
-        padding: const EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -146,6 +149,7 @@ class ProductView extends StatelessWidget {
               children: [
                 Text(
                   product.name,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.bold),
                 ),
@@ -154,6 +158,7 @@ class ProductView extends StatelessWidget {
                 ),
                 Text(
                   product.origin,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 14, color: textColor),
                 ),
               ]),

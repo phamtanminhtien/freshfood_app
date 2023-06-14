@@ -23,10 +23,11 @@ class ProductCard extends StatelessWidget {
           onPressProduct(product);
         },
         child: Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
             child: Container(
                 padding: const EdgeInsets.all(20),
                 height: 100,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -65,18 +66,23 @@ class ProductCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '#${product.productId} - ${product.name}',
-                                  style: const TextStyle(
-                                      color: textColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+                                Container(
+                                    width: 200,
+                                    child: Text(
+                                      '#${product.productId} - ${product.name}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    )),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
                                   product.origin,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       color: textColor,
                                       fontWeight: FontWeight.normal,

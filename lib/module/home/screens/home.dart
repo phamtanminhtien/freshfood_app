@@ -7,6 +7,10 @@ import 'package:freshfood_app/module/product/models/product.dart';
 import 'package:freshfood_app/module/providers/restapi.dart';
 import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
+import 'dart:convert';
+
 import '../../../constant.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +24,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double bgHeight = 200;
+
+  double longitute = 0.0;
+  double latitude = 0.0;
 
   void calculateHeight(double position) {
     if (position < 1) {
@@ -48,6 +55,25 @@ class _HomeScreenState extends State<HomeScreen> {
   String weatherLocation = "Hanoi, Vietnam";
   String weatherTemperature = "30";
   String weatherDate = "Monday, 20 July 2020";
+
+  Future<void> fetchLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        latitude = position.latitude;
+        longitute = position.longitude;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,5 +228,18 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
+  }
+}
+
+Future<Map<String, dynamic>> fetchWeatherData(
+    String apiKey, double latitude, double longitude) async {
+  var url = Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+  var response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch weather data');
   }
 }

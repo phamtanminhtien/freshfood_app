@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freshfood_app/common/app_bar_custom.dart';
 import 'package:freshfood_app/module/dashboard/screens/product_view.dart';
@@ -48,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     if (_pageController.hasClients) {
       _pageController.animateToPage(pageViewIndex,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
+          duration: const Duration(milliseconds: 500), curve: Curves.ease);
     }
   }
 
@@ -93,13 +94,120 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 16, left: 6),
-                                  child: DashboardChart(),
-                                ),
-                              ),
+                              FutureBuilder(
+                                  future: productFuture,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      // print(snapshot.data);
+                                      final data = snapshot.data;
+
+                                      // print(data?[0]);
+                                      var listLabelsChart = [];
+                                      var listDataChart = [];
+                                      var listDataProcessChart = [];
+                                      var listDataDeliveryChart = [];
+
+                                      int timestamp = 0;
+                                      int timestampCreate = 0;
+                                      int timeProcess = 0;
+                                      int timeProcessTemp = 0;
+                                      int timeDelivery = 0;
+                                      int timeDeliveryTemp = 0;
+
+                                      data?[0].forEach((d) => {
+                                            listDataChart = d[4],
+                                            print(listDataChart),
+                                            listDataChart.forEachIndexed((index,
+                                                    dc) =>
+                                                {
+                                                  timestamp = int.parse(
+                                                      dc[3].toString()),
+                                                  if (dc[0] == "create")
+                                                    {
+                                                      timestampCreate =
+                                                          timestamp
+                                                    }
+                                                  else if (dc[0] == "delivery")
+                                                    {
+                                                      timeDelivery = 1 +
+                                                          (timestamp -
+                                                                  timestampCreate) ~/
+                                                              86400,
+                                                      if (timeDelivery ==
+                                                          timeProcess)
+                                                        timeDelivery =
+                                                            timeDelivery + 1,
+                                                      // if (timeDelivery < 0)
+                                                      //   timeDelivery = 0,
+                                                    }
+                                                  else
+                                                    {
+                                                      timeProcessTemp = 1 +
+                                                          (timestamp -
+                                                                  timestampCreate) ~/
+                                                              86400,
+                                                      if (timeProcessTemp > 0)
+                                                        timeProcess =
+                                                            timeProcessTemp,
+                                                      // if (timeProcess < 0)
+                                                      //   timeProcess = 0,
+                                                      // print("hi"),
+                                                      // print(dc[3]),
+
+                                                      // listDataDeliveryChart
+                                                      //     .add(0)
+                                                    }
+                                                  //check element last
+                                                  ,
+                                                  if (index ==
+                                                      listDataChart.length - 1)
+                                                    {
+                                                      if (timeDelivery == 0 &&
+                                                          timeProcess != 0)
+                                                        timeDelivery =
+                                                            timeProcess,
+                                                      listDataProcessChart
+                                                          .add(timeProcess),
+                                                      listDataDeliveryChart
+                                                          .add(timeDelivery),
+                                                      timeProcess = 0,
+                                                      timeDelivery = 0,
+                                                    }
+                                                }),
+                                            listLabelsChart
+                                                .add("#${d[0]} - ${d[1]}"),
+                                          });
+
+                                      print("listLabelsChart: ");
+                                      print(listLabelsChart);
+                                      print("dataChart: ");
+                                      print(listDataProcessChart);
+                                      print("deliveryChart: ");
+                                      print(listDataDeliveryChart);
+
+                                      var apiChart = {
+                                        "labels": listLabelsChart,
+                                        "data": {
+                                          "process": listDataProcessChart,
+                                          "delivery": listDataDeliveryChart
+                                        },
+                                      };
+
+                                      return Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 16, left: 6),
+                                          child: DashboardChart(
+                                            apiChart: apiChart,
+                                          ),
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("Error: ${snapshot.error}");
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }),
                               const SizedBox(
                                 height: 10,
                               ),

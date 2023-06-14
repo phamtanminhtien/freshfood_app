@@ -2,7 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class DashboardChart extends StatefulWidget {
-  DashboardChart({super.key});
+  DashboardChart({super.key, required this.apiChart});
+
+  final Map<dynamic, dynamic> apiChart;
 
   final Color dark = Colors.black54;
   final Color normal = Colors.cyan;
@@ -13,24 +15,24 @@ class DashboardChart extends StatefulWidget {
 }
 
 class DashboardChartState extends State<DashboardChart> {
-  var apiData = {
-    "labels": [
-      "Apple",
-      "Banana",
-      "Orange",
-      "Lemon",
-      "Cherry",
-      "Strawberry",
-      "Peach",
-      "Pineapple",
-      "Mango",
-      "Watermelon",
-    ],
-    "data": {
-      "process": ["12", "18", "31", "12", "18", "30", "12", "18", "30", "12"],
-      "delivery": ["20", "20", "38", "42", "20", "40", "16", "20", "35", "60"],
-    }
-  };
+  // var apiChart = {
+  //   "labels": [
+  //     "Apple",
+  //     "Banana",
+  //     "Orange",
+  //     "Lemon",
+  //     "Cherry",
+  //     "Strawberry",
+  //     "Peach",
+  //     "Pineapple",
+  //     "Mango",
+  //     "Watermelon",
+  //   ],
+  //   "data": {
+  //     "process": ["12", "18", "31", "12", "18", "30", "12", "18", "30", "12"],
+  //     "delivery": ["20", "20", "38", "42", "20", "40", "16", "20", "35", "60"],
+  //   }
+  // };
 
   List<String> labels = [];
   Map<String, Object> data = {};
@@ -40,11 +42,11 @@ class DashboardChartState extends State<DashboardChart> {
   @override
   void initState() {
     super.initState();
-    (apiData['labels'] as List?)?.forEach((e) {
+    (widget.apiChart['labels'] as List?)?.forEach((e) {
       labels.add(e.toString());
     });
 
-    data = apiData['data'] as Map<String, Object>;
+    data = widget.apiChart['data'] as Map<String, Object>;
     (data['process'] as List?)?.forEach((e) {
       processData.add(e.toString());
     });
@@ -57,9 +59,17 @@ class DashboardChartState extends State<DashboardChart> {
     const style = TextStyle(fontSize: 10);
     String text = labels[value.toInt()];
     return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: Transform.rotate(angle: -120, child: Text(text, style: style)),
-    );
+        axisSide: meta.axisSide,
+        child: Transform.rotate(
+          angle: -120,
+          child: SizedBox(
+              width: 100,
+              child: Text(
+                text,
+                style: style,
+                overflow: TextOverflow.ellipsis,
+              )),
+        ));
   }
 
   Widget leftTitles(double value, TitleMeta meta) {

@@ -50,7 +50,7 @@ class _TabUpdateProductState extends State<TabUpdateProduct> {
 
   int getTimestamp() {
     var now = DateTime.now();
-    return now.millisecondsSinceEpoch;
+    return (now.millisecondsSinceEpoch / 1000).floor();
   }
 
   @override

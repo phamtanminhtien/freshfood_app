@@ -55,6 +55,7 @@ class FieldCard extends StatelessWidget {
                         children: [
                           Text(
                             "#${product.productId} - ${product.name}",
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -69,6 +70,7 @@ class FieldCard extends StatelessWidget {
                               ),
                               Text(
                                 product.origin,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w300,
@@ -85,7 +87,7 @@ class FieldCard extends StatelessWidget {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50))),
                         child: const Text(
-                          "30 Ngày",
+                          "",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
