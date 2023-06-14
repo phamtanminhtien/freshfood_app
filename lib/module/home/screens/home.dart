@@ -8,7 +8,10 @@ import 'package:freshfood_app/module/providers/restapi.dart';
 import 'package:freshfood_app/module/providers/walletconnect.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
+
 import 'dart:convert';
 
 import '../../../constant.dart';
@@ -25,8 +28,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   double bgHeight = 200;
 
-  double longitute = 0.0;
-  double latitude = 0.0;
+  double longitute = 106.7721875831758;
+  double latitude = 10.850957748446847;
+
+  String weatherIcon = "assets/weather_icons/rain_sun.png";
+  String weatherLocation = "Ho Chi Minh City";
+  String weatherTemperature = "30";
+  String weatherDate = "Monday, 20 July 2020";
 
   void calculateHeight(double position) {
     if (position < 1) {
@@ -51,10 +59,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
-  String weatherIcon = "assets/weather_icons/rain_sun.png";
-  String weatherLocation = "Hanoi, Vietnam";
-  String weatherTemperature = "30";
-  String weatherDate = "Monday, 20 July 2020";
+  String convertTimeNowToDateTime() {
+    var date = DateTime.now();
+    var formattedDate = DateFormat('EEEE, d MMMM yyyy').format(date);
+    return formattedDate.toString();
+  }
+
+  String getWeatherIcon(String weatherCondition) {
+    switch (weatherCondition) {
+      case "Clear":
+        return "assets/weather_icons/sun.png";
+      case "Clouds":
+        return "assets/weather_icons/cloud.png";
+      case "Rain":
+        return "assets/weather_icons/rain.png";
+      case "Snow":
+        return "assets/weather_icons/snow.png";
+      case "Thunderstorm":
+        return "assets/weather_icons/storm.png";
+      default:
+        return "assets/weather_icons/sun.png";
+    }
+  }
 
   Future<void> fetchLocation() async {
     try {
@@ -69,10 +95,34 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<Map<String, dynamic>> fetchWeatherData(
+      String apiKey, double latitude, double longitude) async {
+    var url = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        weatherLocation = json.decode(response.body)['name'];
+        weatherTemperature =
+            (json.decode(response.body)['main']['temp'] - 273.15)
+                .toStringAsFixed(0);
+        weatherDate = convertTimeNowToDateTime();
+        weatherIcon =
+            getWeatherIcon(json.decode(response.body)['weather'][0]['main']);
+      });
+      print(json.decode(response.body));
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to fetch weather data');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchLocation();
+    // fetchLocation();
+    fetchWeatherData(dotenv.get("OPENWEATHER_API_KEY"), latitude, longitute);
   }
 
   @override
@@ -81,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final walletProvider = Provider.of<WalletProvider>(context);
     var productFuture =
         walletProvider.getProductByOwner(walletProvider.account);
+    var ownerFuture = walletProvider.getOwnerByAddress(walletProvider.account);
 
     return Stack(
       children: [
@@ -119,21 +170,44 @@ class _HomeScreenState extends State<HomeScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
+                                children: [
+                                  const Text(
                                     "Good morning",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w200,
                                         fontSize: 20),
                                   ),
-                                  Text(
-                                    "Admin",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 20),
-                                  )
+                                  // Text(
+                                  //   "Admin",
+                                  //   style: TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontWeight: FontWeight.w500,
+                                  //       fontSize: 20),
+                                  // )
+                                  FutureBuilder<List<dynamic>>(
+                                      future: ownerFuture,
+                                      builder: (context,
+                                          AsyncSnapshot<List<dynamic>>
+                                              snapshot) {
+                                        if (snapshot.hasData) {
+                                          final data = snapshot.data;
+                                          print(data);
+                                          return Text(
+                                            "${data![0][0]}",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 20),
+                                          );
+                                        } else {
+                                          return const Text("Admin",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 20));
+                                        }
+                                      }),
                                 ],
                               ),
                               Image.asset(
@@ -228,18 +302,5 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
-  }
-}
-
-Future<Map<String, dynamic>> fetchWeatherData(
-    String apiKey, double latitude, double longitude) async {
-  var url = Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
-  var response = await http.get(url);
-
-  if (response.statusCode == 200) {
-    return json.decode(response.body);
-  } else {
-    throw Exception('Failed to fetch weather data');
   }
 }

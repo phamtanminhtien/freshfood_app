@@ -43,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     const CircleAvatar(
-                      backgroundColor: primaryColor,
+                      backgroundImage: AssetImage('assets/images/avatar.png'),
                       radius: 80,
                     ),
                     const SizedBox(height: 10),
@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        "Company",
+                        "Name/Company",
                         style: GoogleFonts.getFont('Poppins',
                             color: Colors.black,
                             fontSize: 16,
@@ -190,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        "Description",
+                        "Email",
                         style: GoogleFonts.getFont('Poppins',
                             color: Colors.black,
                             fontSize: 16,
@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: isEdit
-                        ? TextField(
+                        ? TextFormField(
                             decoration: InputDecoration(
                               hintText: companyDescription.text,
                               hintStyle: const TextStyle(
@@ -212,6 +212,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               border: InputBorder.none,
                             ),
                             controller: companyDescription,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (!_validateEmail(value!)) {
+                                return 'Invalid email'; // Return an error message if the email is invalid
+                              }
+                              return null; // Return null if the email is valid
+                            },
                           )
                         : FutureBuilder<List<dynamic>>(
                             future: ownerFuture,
@@ -279,4 +286,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ]),
         ));
   }
+}
+
+bool _validateEmail(String value) {
+  // Use a regular expression to validate the email format
+  // You can customize the pattern based on your requirements
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+
+  if (value.isEmpty) {
+    return false; // Return false if the email is empty
+  } else if (!emailRegex.hasMatch(value)) {
+    return false; // Return false if the email format is invalid
+  }
+
+  return true; // Return true if the email is valid
 }
